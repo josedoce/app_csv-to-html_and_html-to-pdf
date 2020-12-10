@@ -1,0 +1,62 @@
+manipulação de arquivos com o fs, modulo inbuild do nodejs
+
+const fs = require('fs');
+const path = require('path');
+
+fs.readdir(__dirname,(erro, dados)=>{
+    if(erro){
+        console.log('nao foi possivel ler o diretorio')
+    }else{
+        let data = [];
+        dados.forEach((indice)=>{
+            const dados = indice.split('.');
+            if(dados[1]=='txt'){
+                
+                data.push(dados.join('.'));
+            }
+        })
+        // console.log(data)
+        data.forEach((indice)=>{
+            //função com calback retornando erro e dados
+            fs.readFile(`./${indice}`,{encoding: 'utf-8'},(erro, dados)=>{
+                if(erro){
+                    console.log('Não foi possivel ler o arquivo!');
+                }else{
+                    console.log(dados);
+                }
+            });
+        })
+    }
+})
+
+//leitura de arquivos de texto
+function ler(){
+    fs.readFile(`./nomes.txt`,{encoding: 'utf-8'},(erro, dados)=>{
+        if(erro){
+            console.log('Não foi possivel ler o arquivo!');
+        }else{
+            console.log(dados);
+        }
+    });
+}
+//escrita em arquivos de texto
+function escrever(){
+    fs.writeFile('./nomes.txt','novo conteudo do arquivo',(erro)=>{
+        if(erro){
+            console.log('Erro de escrita!');
+        }
+    })
+}
+
+fs.readFile('./nomes.json',{encoding: 'utf-8'}, (erro, dados)=>{
+    if(!erro){
+        const conteudo = JSON.parse(dados);
+        conteudo[0].nome = 'joseildo aguiar da silva'
+        console.log(conteudo);
+        fs.writeFile('./nomes.json',JSON.stringify(conteudo),(erro)=>{
+            console.log('erro no salvamento do arquivo')
+        });
+    }
+})
+
+uso do html-pdf para transformar html em pdf
